@@ -381,7 +381,7 @@ $("#send").onclick = () => {
     (liv && place ? `🏢 *Lieu :* ${place}\n` : "") +
     `\n📋 *Détail de la commande :*\n${lines}\n\n` +
     `💰 *TOTAL À PAYER : ${fmt(total())}*\n\n` +
-    `_Merci pour votre commande !_ 🙏`;
+    `_Merci_`;
 
   window.open(
     `https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`,
