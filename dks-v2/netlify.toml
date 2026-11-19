@@ -1,0 +1,12 @@
+[build]
+  publish = "."  # Dit à Netlify que le site est à la racine du repo
+  # Pas de commande de build, car c'est du statique pur
+
+# Optionnel : Sécuriser les headers (bon pour la sécurité et le SEO)
+[[headers]]
+  for = "/images*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

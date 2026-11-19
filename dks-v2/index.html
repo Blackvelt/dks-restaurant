@@ -14,10 +14,11 @@
 <body>
 <script>document.documentElement.classList.add('js')</script>
 
-<nav class="nav" aria-label="Navigation principale">
+<!-- Navigation avec Glassmorphism -->
+<nav class="nav glass-nav" aria-label="Navigation principale">
   <div class="wrap nav-in">
     <a class="logo" href="#accueil">DKS<small>RESTAURATION</small></a>
-    <button class="burger" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
     <ul id="menu">
       <li><a href="#rendez-vous">Rendez-vous</a></li>
       <li><a href="#plats">Commander</a></li>
@@ -32,11 +33,20 @@
   <div class="wrap">
     <p class="banner" id="banner"><i></i><span>Tous les repas à 1000 F</span></p>
     <h1 class="script">Tous les repas</h1>
+    
     <div class="badge" role="img" aria-label="1000 francs"><b id="count" data-to="1000">1000</b><span>FRANCS</span></div>
+    
+    <p class="hero-note">Grande portion à 1000 F · Petite portion à 500 F</p>
+
+    <p class="quick-proof">
+      ⚡ <b>Commande en 30 secondes</b> · Ton message part déjà formaté sur WhatsApp · Zéro prise de tête.
+    </p>
+
     <div class="cta">
       <a class="btn main" href="#plats">Composer ma commande</a>
       <a class="btn alt" href="tel:+22890184623">Appeler le 90 18 46 23</a>
     </div>
+    
     <div class="strip">
       <img src="images/riz.jpg" alt="Riz sauté au poulet et petits légumes">
       <img src="images/pate.jpg" alt="Pâte rouge, poulet grillé et piment frais">
@@ -55,7 +65,7 @@
       <article class="day reveal" data-day="4"><img src="images/sandwich.jpg" alt="Sandwich au thon"><div><p>Tous les jeudis</p><h3>Sandwich + jus</h3></div></article>
       <article class="day reveal" data-day="5"><img src="images/attieke.jpg" alt="Attiéké"><div><p>Tous les vendredis</p><h3>Attiéké</h3></div></article>
     </div>
-    <div class="price reveal">Plats à partir de 1000 F et 500 F</div>
+    <div class="price reveal">Deux formats au choix : Petite portion à 500 F · Grande portion à 1000 F</div>
   </div>
 </section>
 
@@ -64,7 +74,10 @@
     <h2 class="reveal">Composez votre commande</h2>
     <p class="lead reveal">Choisissez vos plats et la portion (500 F ou 1000 F). Votre commande part sur WhatsApp, prête à envoyer.</p>
     <div class="chips" id="chips" role="group" aria-label="Filtrer les plats"></div>
+    
+    <!-- La grille qui va accueillir TOUS les plats (y compris le sandwich) -->
     <div class="grid" id="grid"></div>
+    
     <noscript><p class="lead">Activez JavaScript pour commander ici, ou appelez le 90 18 46 23.</p></noscript>
   </div>
 </section>
@@ -73,8 +86,8 @@
   <div class="wrap">
     <div class="box reveal">
       <p class="script">Info livraison</p>
-      <strong>Pour l’instant, les livraisons se font uniquement sur le campus.</strong>
-      <span class="pill">À partir de 500 francs</span>
+      <strong>Livraison sur le campus en 20 à 30 minutes.</strong>
+      <span class="pill">Commande minimum : 500 F</span>
     </div>
   </div>
 </section>
@@ -92,28 +105,36 @@
   </div>
 </footer>
 
-<button class="fab" id="fab" hidden aria-label="Ouvrir le panier"><span id="fab-n">0</span> <b id="fab-t"></b></button>
+<!-- La nouvelle barre de panier fixe (remplace le FAB) -->
+<div class="cart-bar" id="cart-bar" hidden>
+  <div class="cart-bar-info">
+    <b id="bar-n">0</b> article(s) · <b id="bar-t">0 F</b>
+  </div>
+  <button class="btn main" id="bar-open" type="button">Voir ma commande</button>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <dialog id="lightbox" aria-label="Photo agrandie">
-  <button class="close" aria-label="Fermer">×</button>
-  <button class="nav-btn prev" aria-label="Photo précédente">‹</button>
-  <button class="nav-btn next" aria-label="Photo suivante">›</button>
+  <button class="close" type="button" aria-label="Fermer">×</button>
+  <button class="nav-btn prev" type="button" aria-label="Photo précédente">‹</button>
+  <button class="nav-btn next" type="button" aria-label="Photo suivante">›</button>
   <img alt=""><p></p>
 </dialog>
 
-<dialog id="cart" aria-label="Mon panier">
-  <button class="close" aria-label="Fermer">×</button>
+<!-- Dialog du panier avec Glassmorphism -->
+<dialog id="cart" class="glass-cart" aria-label="Mon panier">
+  <button class="close" type="button" aria-label="Fermer">×</button>
   <h3>Ma commande</h3>
   <ul id="lines"></ul>
   <p class="total">Total : <b id="total">0 F</b></p>
-  <label>Votre prénom<input id="name" autocomplete="given-name" placeholder="Ex. Kossi"></label>
+  <label>Votre prénom<input id="name" type="text" autocomplete="given-name" placeholder="Ex. Kossi"></label>
   <fieldset>
     <legend>Récupération</legend>
     <label class="radio"><input type="radio" name="mode" value="emporter" checked> Sur place / à emporter</label>
     <label class="radio"><input type="radio" name="mode" value="livraison"> Livraison sur le campus</label>
   </fieldset>
-  <label id="place-wrap" hidden>Lieu de livraison sur le campus<input id="place" placeholder="Ex. Bâtiment B, salle 12"></label>
+  <label id="place-wrap" hidden>Lieu de livraison sur le campus<input id="place" type="text" placeholder="Ex. Bâtiment B, salle 12"></label>
   <p class="warn" id="warn" hidden>La livraison commence à 500 F de commande.</p>
   <div class="cart-actions">
     <button class="btn alt" id="clear" type="button">Vider</button>
