@@ -1,0 +1,5 @@
+# Static HTML/CSS/JS site — no build step or dependencies required.
+# The site lives in the dks-v2/ folder, which is published as-is.
+[build]
+  publish = "dks-v2"
+  command = ""
