@@ -1,0 +1,11 @@
+DKS Restauration – site vitrine v2 (HTML / CSS / JS)
+
+Ouvrir : double-clic sur index.html (aucune installation, aucune base de données).
+Mettre en ligne : envoyer tout le dossier chez l'hébergeur (Netlify, GitHub Pages...).
+
+Modifier :
+- Plats, descriptions, catégories : tableau DISHES en haut de js/main.js
+- Jours des rendez-vous : objet RV dans js/main.js (1 = lundi ... 5 = vendredi)
+- Numéro WhatsApp : PHONE dans js/main.js (+ liens tel: / wa.me dans index.html)
+- Couleurs : variables en haut de css/style.css
+- Photos : dossier images/

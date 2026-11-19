@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DKS Restauration – Commandez vos repas à Akato Ségbé</title>
+<meta name="description" content="Tous les repas à 1000 F, plats dès 500 F. Composez votre commande et envoyez-la sur WhatsApp. Akato Ségbé, livraison sur le campus.">
+<meta name="theme-color" content="#6b1a1f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Montserrat:wght@500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap nav-in">
+    <a class="logo" href="#accueil">DKS<small>RESTAURATION</small></a>
+    <button class="burger" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu"><span></span><span></span><span></span></button>
+    <ul id="menu">
+      <li><a href="#rendez-vous">Rendez-vous</a></li>
+      <li><a href="#plats">Commander</a></li>
+      <li><a href="#livraison">Livraison</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="progress" id="progress"></div>
+</nav>
+
+<header class="hero" id="accueil">
+  <div class="wrap">
+    <p class="banner" id="banner"><i></i><span>Tous les repas à 1000 F</span></p>
+    <h1 class="script">Tous les repas</h1>
+    <div class="badge" role="img" aria-label="1000 francs"><b id="count" data-to="1000">1000</b><span>FRANCS</span></div>
+    <div class="cta">
+      <a class="btn main" href="#plats">Composer ma commande</a>
+      <a class="btn alt" href="tel:+22890184623">Appeler le 90 18 46 23</a>
+    </div>
+    <div class="strip">
+      <img src="images/riz.jpg" alt="Riz sauté au poulet et petits légumes">
+      <img src="images/pate.jpg" alt="Pâte rouge, poulet grillé et piment frais">
+      <img src="images/attieke.jpg" alt="Attiéké, poisson frit et oignons">
+      <img src="images/ayimolou.jpg" alt="Ayimolou avec œuf et poisson frit">
+    </div>
+  </div>
+</header>
+
+<section class="dark" id="rendez-vous">
+  <div class="wrap">
+    <h2 class="reveal">Nos rendez-vous</h2>
+    <p class="lead reveal">Chaque semaine, sans faute.</p>
+    <div class="days">
+      <article class="day reveal" data-day="1"><img src="images/ayimolou.jpg" alt="Ayimolou"><div><p>Tous les lundis</p><h3>Ayimolou</h3></div></article>
+      <article class="day reveal" data-day="4"><img src="images/sandwich.jpg" alt="Sandwich au thon"><div><p>Tous les jeudis</p><h3>Sandwich + jus</h3></div></article>
+      <article class="day reveal" data-day="5"><img src="images/attieke.jpg" alt="Attiéké"><div><p>Tous les vendredis</p><h3>Attiéké</h3></div></article>
+    </div>
+    <div class="price reveal">Plats à partir de 1000 F et 500 F</div>
+  </div>
+</section>
+
+<section class="plats" id="plats">
+  <div class="wrap">
+    <h2 class="reveal">Composez votre commande</h2>
+    <p class="lead reveal">Choisissez vos plats et la portion (500 F ou 1000 F). Votre commande part sur WhatsApp, prête à envoyer.</p>
+    <div class="chips" id="chips" role="group" aria-label="Filtrer les plats"></div>
+    <div class="grid" id="grid"></div>
+    <noscript><p class="lead">Activez JavaScript pour commander ici, ou appelez le 90 18 46 23.</p></noscript>
+  </div>
+</section>
+
+<section class="deliv" id="livraison">
+  <div class="wrap">
+    <div class="box reveal">
+      <p class="script">Info livraison</p>
+      <strong>Pour l’instant, les livraisons se font uniquement sur le campus.</strong>
+      <span class="pill">À partir de 500 francs</span>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="logo">DKS<small>RESTAURATION</small></div>
+    <a class="tel" href="tel:+22890184623">90 18 46 23</a>
+    <p>Akato Ségbé · Commandes par téléphone ou WhatsApp</p>
+    <div class="cta">
+      <a class="btn main" href="https://wa.me/22890184623" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn alt" href="tel:+22890184623">Appeler</a>
+    </div>
+    <small class="copy">© <span id="year">2026</span> DKS Restauration</small>
+  </div>
+</footer>
+
+<button class="fab" id="fab" hidden aria-label="Ouvrir le panier"><span id="fab-n">0</span> <b id="fab-t"></b></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="lightbox" aria-label="Photo agrandie">
+  <button class="close" aria-label="Fermer">×</button>
+  <button class="nav-btn prev" aria-label="Photo précédente">‹</button>
+  <button class="nav-btn next" aria-label="Photo suivante">›</button>
+  <img alt=""><p></p>
+</dialog>
+
+<dialog id="cart" aria-label="Mon panier">
+  <button class="close" aria-label="Fermer">×</button>
+  <h3>Ma commande</h3>
+  <ul id="lines"></ul>
+  <p class="total">Total : <b id="total">0 F</b></p>
+  <label>Votre prénom<input id="name" autocomplete="given-name" placeholder="Ex. Kossi"></label>
+  <fieldset>
+    <legend>Récupération</legend>
+    <label class="radio"><input type="radio" name="mode" value="emporter" checked> Sur place / à emporter</label>
+    <label class="radio"><input type="radio" name="mode" value="livraison"> Livraison sur le campus</label>
+  </fieldset>
+  <label id="place-wrap" hidden>Lieu de livraison sur le campus<input id="place" placeholder="Ex. Bâtiment B, salle 12"></label>
+  <p class="warn" id="warn" hidden>La livraison commence à 500 F de commande.</p>
+  <div class="cart-actions">
+    <button class="btn alt" id="clear" type="button">Vider</button>
+    <button class="btn main" id="send" type="button">Envoyer sur WhatsApp</button>
+  </div>
+</dialog>
+
+<script src="js/main.js"></script>
+</body>
+</html>
