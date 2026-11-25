@@ -1,0 +1,5 @@
+{
+  "buildCommand": "echo \"window.SUPABASE_URL='$SUPABASE_URL'; window.SUPABASE_ANON_KEY='$SUPABASE_ANON_KEY';\" > dks-v2/js/config.js",
+  "outputDirectory": "dks-v2",
+  "cleanUrls": true
+}

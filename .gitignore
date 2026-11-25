@@ -3,3 +3,7 @@ Thumbs.db
 node_modules/
 .vscode/
 .env
+<<<<<<< HEAD:.gitignore
+=======
+js/config.js
+>>>>>>> 8d42231 (feat: changement sur le site):dks-v2/.gitignore

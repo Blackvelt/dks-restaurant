@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin - Gestion du Menu | DKS Restauration</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Montserrat, sans-serif;
+        background: #faf1e4;
+        color: #6b1a1f;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 18px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        font-family: "Playfair Display", serif;
+        text-align: center;
+        margin-top: 0;
+      }
+      .day-block {
+        border-bottom: 1px solid #eee;
+        padding: 20px 0;
+      }
+      .day-block:last-child {
+        border-bottom: none;
+      }
+      .day-title {
+        font-weight: 800;
+        color: #1f9d55;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+      }
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: inherit;
+        box-sizing: border-box;
+      }
+      input[type="file"] {
+        border: none;
+        padding: 0;
+      }
+      button {
+        background: #1f9d55;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        width: 100%;
+        transition: 0.2s;
+      }
+      button:hover {
+        background: #167a41;
+      }
+      .status {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 600;
+        color: #1f9d55;
+      }
+      .status.error {
+        color: #a02020;
+      }
+      .img-preview {
+        max-width: 100px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gestion du Menu</h1>
+      <p style="text-align: center; font-size: 0.9rem; color: #666">
+        Modifiez les plats et les photos pour chaque jour.
+      </p>
+
+      <div id="form-container"></div>
+    </div>
+
+    <!-- 1. On charge le fichier de config (généré par Vercel) -->
+    <script src="js/config.js"></script>
+    <!-- 2. On charge Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // 3. Initialisation
+      const supabase = window.supabase.createClient(
+        window.SUPABASE_URL,
+        window.SUPABASE_ANON_KEY,
+      );
+      const JOURS = ["", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi"];
+
+      // 4. Génération du formulaire
+      const container = document.getElementById("form-container");
+      let html = "";
+      for (let i = 1; i <= 5; i++) {
+        html += `
+      <div class="day-block" id="block-${i}">
+        <div class="day-title">${JOURS[i]}</div>
+        <input type="text" id="nom-${i}" placeholder="Nom du plat">
+        <textarea id="desc-${i}" placeholder="Description (ex: Riz, poulet, sauce)" rows="2"></textarea>
+        <img id="preview-${i}" class="img-preview" alt="Aperçu">
+        <input type="file" id="file-${i}" accept="image/*" onchange="previewImage(event, ${i})">
+        <button onclick="sauvegarder(${i})">Enregistrer ${JOURS[i]}</button>
+        <div class="status" id="status-${i}"></div>
+      </div>
+    `;
+      }
+      container.innerHTML = html;
+
+      // 5. Fonction d'aperçu de l'image
+      function previewImage(event, jour) {
+        const file = event.target.files[0];
+        const preview = document.getElementById(`preview-${jour}`);
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.style.display = "none";
+        }
+      }
+
+      // 6. Fonction pour sauvegarder
+      async function sauvegarder(jour) {
+        const nom = document.getElementById(`nom-${jour}`).value;
+        const desc = document.getElementById(`desc-${jour}`).value;
+        const file = document.getElementById(`file-${jour}`).files[0];
+        const status = document.getElementById(`status-${jour}`);
+
+        if (!nom) return alert("Veuillez mettre un nom de plat.");
+
+        status.className = "status";
+        status.textContent = "Enregistrement en cours...";
+        let imageUrl = null;
+
+        try {
+          // Upload de l'image si présente
+          if (file) {
+            const fileName = `jour-${jour}-${Date.now()}.jpg`;
+            const { data, error } = await supabase.storage
+              .from("plats")
+              .upload(fileName, file, { upsert: true });
+
+            if (error) throw error;
+            const { data: publicUrl } = supabase.storage
+              .from("plats")
+              .getPublicUrl(fileName);
+            imageUrl = publicUrl.publicUrl;
+          }
+
+          // Préparation des données
+          const dataToSave = { jour, nom, description: desc, disponible: true };
+          if (imageUrl) dataToSave.image_url = imageUrl;
+
+          // Vérifier si le jour existe déjà
+          const { data: existing } = await supabase
+            .from("menu")
+            .select("id")
+            .eq("jour", jour)
+            .single();
+
+          if (existing) {
+            await supabase.from("menu").update(dataToSave).eq("jour", jour);
+          } else {
+            await supabase.from("menu").insert(dataToSave);
+          }
+
+          status.textContent = "✅ Enregistré avec succès !";
+          setTimeout(() => (status.textContent = ""), 3000);
+        } catch (e) {
+          console.error(e);
+          status.className = "status error";
+          status.textContent = "❌ Erreur : " + e.message;
+        }
+      }
+    </script>
+  </body>
+</html>
